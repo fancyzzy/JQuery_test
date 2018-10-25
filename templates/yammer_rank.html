@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Yammer Rank Home Page</title>
+    <!--script type="text/javascript"></script-->
+    <link href="/static/favicon.ico" rel="icon" type="image/x-icon" />
+</head>
+
+<body>
+<h1> Hello {{ user_name }}, welcome to Yammer Rank!</h1>
+<h4>Select group, end date and start date to get the rank result</h4>
+<!-- form method="post" action="/rank_result"-->
+<form>
+    <br>
+    from date
+    <input type="date" id="id_end_date" name="end_date" placeholder="Enter end date"/>
+    back to
+    <input type="date" name="start_date" placeholder="Beginning"/>
+    <br>
+    Comment character number >=
+    <input type="text" id="id_letter_num" name="letter_num" oninput="value=value.replace(/[^\d]/g,'')"/>
+    <br>
+    Comment number >=
+    <input type="text" id="id_comment_num" name="least_comment_num" oninput="value=value.replace(/[^\d]/g,'')"/>
+    <br>
+    final comment number =
+    <input type="text" id="id_final_comment_num" name="final_comment_num" oninput="value=value.replace(/[^\d]/g,'')"/>
+    <br>
+    display top x labels=
+    <input type="text" id="id_show_top" name="show_top" oninput="value=value.replace(/[^-,\d]/g,'')"/>
+    <br>
+    Rank based on post number=
+    <select id="id_rank_for_post" name="rank_for_post">
+        <option value = 0> False</option>
+        <option value = 1> True</option>
+    </select>
+    <br><br>
+    <input type="button" id="id_get_rank" value="Get Yammer Rank" name="get_rank" />
+<p>form 内如果您点击我，我会消失。</p>
+<p>form 内12如果您点击我，我会消失。</p>
+</form>
+<br><br>
+<hr>
+<div id="id_data_img" name="data_img">这里放置ajax获取的img</div>
+<br/>
+<div id="id_rank_list" name="rank_list">这里是列表</div>
+<p>如果您点击我，我会消失。</p>
+<p>如果您点击我，我会消失12。</p>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+
+    //$(document).ready(function() {
+    $(function() {
+        $('#id_get_rank').click(function() {
+        $('#id_data_img').append("<b>加了后面一段文本</b>");
+        });
+    });
+
+    $(function() {
+        $("p").click(function() {
+            $(this).hide();
+        });
+    });
+
+</script>
+
+</body>
+</html>
