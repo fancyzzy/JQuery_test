@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <title> Yammer Rank Home Page</title>
     <!--script type="text/javascript"></script-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <link href="/static/favicon.ico" rel="icon" type="image/x-icon" />
 </head>
 
 <body>
 <h1> Hello {{ user_name }}, welcome to Yammer Rank!</h1>
 <h4>Select group, end date and start date to get the rank result</h4>
+
 <!-- form method="post" action="/rank_result"-->
-<form>
+<form id="my_form" method="POST">
+    <br>
+    group id*
+    <input type="text" id="id_sel_group" name="sel_group" placeholder="Enter group id" oninput="value=value.replace(/[^\d]/g,'')"/>
     <br>
     from date
     <input type="date" id="id_end_date" name="end_date" placeholder="Enter end date"/>
@@ -19,13 +24,13 @@
     <input type="date" name="start_date" placeholder="Beginning"/>
     <br>
     Comment character number >=
-    <input type="text" id="id_letter_num" name="letter_num" oninput="value=value.replace(/[^\d]/g,'')"/>
+    <input type="text" id="id_letter_num" name="letter_num" value="1" oninput="value=value.replace(/[^\d]/g,'')"/>
     <br>
     Comment number >=
-    <input type="text" id="id_comment_num" name="least_comment_num" oninput="value=value.replace(/[^\d]/g,'')"/>
+    <input type="text" id="id_comment_num" name="least_comment_num" value="1" oninput="value=value.replace(/[^\d]/g,'')"/>
     <br>
     final comment number =
-    <input type="text" id="id_final_comment_num" name="final_comment_num" oninput="value=value.replace(/[^\d]/g,'')"/>
+    <input type="text" id="id_final_comment_num" name="final_comment_num" value="100" oninput="value=value.replace(/[^\d]/g,'')"/>
     <br>
     display top x labels=
     <input type="text" id="id_show_top" name="show_top" oninput="value=value.replace(/[^-,\d]/g,'')"/>
@@ -35,33 +40,56 @@
         <option value = 0> False</option>
         <option value = 1> True</option>
     </select>
+
     <br><br>
-    <input type="button" id="id_get_rank" value="Get Yammer Rank" name="get_rank" />
-<p>form 内如果您点击我，我会消失。</p>
-<p>form 内12如果您点击我，我会消失。</p>
+    <input type="submit" id="id_get_rank" value="Get Yammer Rank" name="get_rank" />
+
+    <p>form 内如果您点击我，我会消失。</p>
+    <p>form 内12如果您点击我，我会消失。</p>
 </form>
 <br><br>
+
+
 <hr>
 <div id="id_data_img" name="data_img">这里放置ajax获取的img</div>
 <br/>
 <div id="id_rank_list" name="rank_list">这里是列表</div>
 <p>如果您点击我，我会消失。</p>
 <p>如果您点击我，我会消失12。</p>
+<br/>
+<div id="success_alert style="display:none;"></div>
+<div id="error_alert style="display:none;"></div>
 
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $('form').on('submit', function(event) {
 
-    //$(document).ready(function() {
-    $(function() {
-        $('#id_get_rank').click(function() {
-        $('#id_data_img').append("<b>加了后面一段文本</b>");
+            $.ajax({
+                data: $('#my_form').serialize(),
+                type: 'POST',
+                url: '/process_ajax'
+            })
+            .done(function(data) {
+                if (data.error) {
+                    $('#error_alert').text(data.error).show();
+                    $('#success_alert').hide();
+                }
+                else {
+                    $('#success_alert').text("You chose group: " + data.group_id + " with "+data.letter_num).show()
+                    $('#error_alert').hide();
+                    alert("You chose group: " + data.group_id)
+                }
+
+            });
+
+            event.preventDefault();
         });
     });
 
     $(function() {
         $("p").click(function() {
-            $(this).hide();
+            $('#id_data_img').append("<b>加了后面一段文本</b>");
         });
     });
 
