@@ -6,9 +6,14 @@ from flask import render_template
 from flask import session
 from flask import redirect, url_for
 from flask import jsonify, request
-
+from flask import Blueprint
+import time
 
 app = Flask(__name__)
+'''
+bmain = Blueprint('main', __name__)
+app.register_blueprint(bmain)
+'''
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -23,6 +28,7 @@ def process_ajax():
     letter_num = request.form['letter_num']
 
     if group_id and letter_num:
+        time.sleep(5)
         print("DEBUG all data available!, group_id: {}, letter_num: {}".format(group_id, letter_num))
         return jsonify({'group_id': group_id, 'letter_num': letter_num})
 
